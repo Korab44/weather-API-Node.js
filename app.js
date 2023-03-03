@@ -9,14 +9,17 @@ app.get('/', function(req, res) {
         console.log(response.statusCode)
         response.on('data', function(data) {
             const weatherData = JSON.parse(data);
+            const icon = weatherData.weather[0].icon;
+            const imgUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
             var temp = weatherData.main.temp;
-            var tempMin = weatherData.main.temp_min;
-            var tempMax = weatherData.main.temp_max;
-            var feelsLike = weatherData.main.feels_like
-            console.log(temp, tempMin, tempMax, feelsLike)
+            var weatherDescription = weatherData.weather[0].description
+            res.write("<h1>The temperature in Prishtina is " + temp + " degrees Celsius</h1>")
+            res.write("<p>The weather is currently " + weatherDescription + "</p>")
+            res.write("<img src=" + imgUrl + " >")
+            res.send()
         })
     })
-    res.send('Server is up and running')
+    
 })
 
 app.listen(3000, function() {
